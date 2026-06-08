@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meus Certificados · SENAC PI 2026</title>
+  <link rel="stylesheet" href="../css/certificados.css" />
+</head>
+<body>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-links">
+    <a href="certificados.html" class="ativo">Meus Certificados</a>
+    <a href="enviar.html">Enviar</a>
+    <a href="#" onclick="sair()">Sair</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="topo">
+    <div>
+      <h1>Meus Certificados</h1>
+      <p class="subtitle">Acompanhe o status dos seus certificados enviados</p>
+    </div>
+    <a href="enviar.html" class="btn-enviar">+ Enviar Certificado</a>
+  </div>
+
+  <div class="resumo">
+    <div class="resumo-card">
+      <div class="numero" id="total-horas">0</div>
+      <div class="rotulo">Horas Totais</div>
+    </div>
+    <div class="resumo-card">
+      <div class="numero" id="total-aprovados">0</div>
+      <div class="rotulo">Aprovados</div>
+    </div>
+    <div class="resumo-card">
+      <div class="numero" id="total-pendentes">0</div>
+      <div class="rotulo">Pendentes</div>
+    </div>
+  </div>
+
+  <div id="lista">
+    <div class="carregando">Carregando certificados...</div>
+  </div>
+</div>
+
+<script src="../js/certificados.js"></script>
+
+</body>
+</html>
