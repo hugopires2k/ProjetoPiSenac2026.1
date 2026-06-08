@@ -1,14 +1,16 @@
 const API = 'http://localhost:3000';
 
-// Redireciona se já estiver logado
 if (localStorage.getItem('token')) {
-  window.location.href = 'certificados.html';
+  redirecionarPorPerfil(localStorage.getItem('perfil'));
 }
 
-// Permitir envio com a tecla Enter
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') fazerLogin();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Enter') fazerLogin(); });
+
+function redirecionarPorPerfil(perfil) {
+  if (perfil === 'admin')        window.location.href = 'admin.html';
+  else if (perfil === 'coordenador') window.location.href = 'coordenador.html';
+  else                           window.location.href = 'certificados.html';
+}
 
 async function fazerLogin() {
   const email = document.getElementById('email').value.trim();
@@ -32,16 +34,15 @@ async function fazerLogin() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, senha })
     });
-
     const dados = await resposta.json();
-
     if (resposta.ok) {
       localStorage.setItem('token', dados.token);
       localStorage.setItem('perfil', dados.perfil);
-      localStorage.setItem('email', dados.email);
+      localStorage.setItem('nome',   dados.nome);
+      localStorage.setItem('email',  dados.email);
       msg.style.color = '#4caf7d';
       msg.textContent = 'Login realizado! Redirecionando...';
-      setTimeout(() => window.location.href = 'certificados.html', 800);
+      setTimeout(() => redirecionarPorPerfil(dados.perfil), 800);
     } else {
       msg.style.color = '#e05c5c';
       msg.textContent = dados.erro || 'E-mail ou senha inválidos.';

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel Admin · SENAC PI 2026</title>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-right">
+    <span class="nav-usuario">👤 <span id="nome-usuario"></span></span>
+    <a href="#" onclick="sair()">Sair</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="topo">
+    <div>
+      <h1>Painel Administrativo</h1>
+      <p class="subtitle">Gerencie os usuários do sistema</p>
+    </div>
+  </div>
+
+  <!-- Resumo -->
+  <div class="resumo">
+    <div class="resumo-card">
+      <div class="numero" id="total-alunos">0</div>
+      <div class="rotulo">Alunos</div>
+    </div>
+    <div class="resumo-card azul">
+      <div class="numero" id="total-coordenadores">0</div>
+      <div class="rotulo">Coordenadores</div>
+    </div>
+    <div class="resumo-card roxo">
+      <div class="numero" id="total-admins">0</div>
+      <div class="rotulo">Admins</div>
+    </div>
+  </div>
+
+  <!-- Cadastrar usuário -->
+  <div class="card-form">
+    <h2>Cadastrar Usuário</h2>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="c-nome">Nome completo</label>
+        <input type="text" id="c-nome" placeholder="Ex: João Silva"/>
+      </div>
+      <div class="form-group">
+        <label for="c-email">E-mail</label>
+        <input type="email" id="c-email" placeholder="joao@senac.br"/>
+      </div>
+      <div class="form-group">
+        <label for="c-senha">Senha</label>
+        <input type="password" id="c-senha" placeholder="Senha de acesso"/>
+      </div>
+      <div class="form-group">
+        <label for="c-perfil">Perfil</label>
+        <select id="c-perfil">
+          <option value="">Selecione o perfil</option>
+          <option value="aluno">Aluno</option>
+          <option value="coordenador">Coordenador</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+
+    <button id="btn-cadastrar" onclick="cadastrarUsuario()">Cadastrar Usuário</button>
+    <p class="msg" id="msg-cadastro"></p>
+  </div>
+
+  <!-- Lista de usuários -->
+  <div class="card-tabela">
+    <h2>Usuários Cadastrados</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-usuarios">
+        <tr><td colspan="4" class="carregando">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

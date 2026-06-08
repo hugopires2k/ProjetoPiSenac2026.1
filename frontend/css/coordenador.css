@@ -1,0 +1,105 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: Georgia, serif;
+  background: #0f1117;
+  color: #e8e8e8;
+  min-height: 100vh;
+}
+
+nav {
+  background: #1a1d27;
+  border-bottom: 1px solid #2e3245;
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #6c8aff; }
+
+.nav-right { display: flex; align-items: center; gap: 24px; }
+
+.nav-usuario { font-size: 13px; color: #7a7f99; font-family: Arial, sans-serif; }
+
+.nav-right a {
+  color: #7a7f99; text-decoration: none; font-size: 14px;
+  font-family: Arial, sans-serif; transition: color 0.2s;
+}
+.nav-right a:hover { color: #e8e8e8; }
+
+.container { max-width: 900px; margin: 60px auto; padding: 0 24px; }
+
+.topo { margin-bottom: 32px; }
+
+h1 { font-size: 28px; font-weight: normal; }
+
+.subtitle { font-size: 14px; color: #7a7f99; margin-top: 6px; font-family: Arial, sans-serif; }
+
+.resumo { display: flex; gap: 16px; margin-bottom: 32px; }
+
+.resumo-card {
+  flex: 1; background: #1a1d27; border: 1px solid #2e3245;
+  border-radius: 10px; padding: 20px; text-align: center;
+}
+.resumo-card .numero { font-size: 32px; color: #6c8aff; }
+.resumo-card.amarelo .numero { color: #f0b429; }
+.resumo-card.verde   .numero { color: #4caf7d; }
+.resumo-card.vermelho .numero { color: #e05c5c; }
+.resumo-card .rotulo {
+  font-size: 12px; color: #7a7f99; text-transform: uppercase;
+  letter-spacing: 1px; font-family: Arial, sans-serif; margin-top: 4px;
+}
+
+.certificado-item {
+  background: #1a1d27; border: 1px solid #2e3245; border-radius: 10px;
+  padding: 20px 24px; margin-bottom: 12px;
+  display: flex; gap: 24px; align-items: flex-start;
+}
+
+.cert-info { flex: 1; }
+.cert-nome { font-size: 16px; margin-bottom: 4px; }
+.cert-aluno { font-size: 12px; color: #6c8aff; font-family: Arial, sans-serif; margin-bottom: 4px; }
+.cert-detalhes { font-size: 13px; color: #7a7f99; font-family: Arial, sans-serif; }
+.cert-desc { font-size: 13px; color: #9a9fb8; font-family: Arial, sans-serif; margin-top: 4px; font-style: italic; }
+.cert-obs { font-size: 12px; color: #f0b429; font-family: Arial, sans-serif; margin-top: 6px; }
+
+.status {
+  display: inline-block; font-size: 11px; padding: 3px 10px;
+  border-radius: 20px; font-family: Arial, sans-serif; margin-top: 6px;
+}
+.status.aprovado  { background: #1a3a2a; color: #4caf7d; }
+.status.pendente  { background: #2e2a1a; color: #f0b429; }
+.status.reprovado { background: #3a1a1a; color: #e05c5c; }
+
+.cert-acoes {
+  display: flex; flex-direction: column; gap: 8px;
+  min-width: 160px; align-items: stretch;
+}
+
+.cert-horas {
+  font-size: 24px; color: #6c8aff; text-align: center;
+}
+.cert-horas span {
+  display: block; font-size: 11px; color: #7a7f99;
+  font-family: Arial, sans-serif; text-transform: uppercase;
+}
+
+.cert-acoes textarea {
+  background: #0f1117; border: 1px solid #2e3245; border-radius: 6px;
+  padding: 8px; color: #e8e8e8; font-size: 12px;
+  font-family: Arial, sans-serif; resize: none; outline: none;
+}
+.cert-acoes textarea:focus { border-color: #6c8aff; }
+
+.btn-status {
+  font-size: 13px; padding: 8px 12px; border: none;
+  border-radius: 6px; cursor: pointer; font-family: Arial, sans-serif;
+  transition: opacity 0.2s; font-weight: bold;
+}
+.btn-status:hover { opacity: 0.8; }
+.btn-status.aprovar  { background: #1a3a2a; color: #4caf7d; }
+.btn-status.reprovar { background: #3a1a1a; color: #e05c5c; }
+
+.vazio { text-align: center; padding: 60px 0; color: #7a7f99; font-family: Arial, sans-serif; }
+.carregando { text-align: center; padding: 40px 0; color: #7a7f99; font-family: Arial, sans-serif; }

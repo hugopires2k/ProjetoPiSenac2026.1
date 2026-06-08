@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel do Coordenador · SENAC PI 2026</title>
+  <link rel="stylesheet" href="../css/coordenador.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-right">
+    <span class="nav-usuario">👤 <span id="nome-usuario"></span></span>
+    <a href="#" onclick="sair()">Sair</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="topo">
+    <div>
+      <h1>Painel do Coordenador</h1>
+      <p class="subtitle">Valide os certificados enviados pelos alunos</p>
+    </div>
+  </div>
+
+  <div class="resumo">
+    <div class="resumo-card">
+      <div class="numero" id="total-enviados">0</div>
+      <div class="rotulo">Total Enviados</div>
+    </div>
+    <div class="resumo-card amarelo">
+      <div class="numero" id="total-pendentes">0</div>
+      <div class="rotulo">Pendentes</div>
+    </div>
+    <div class="resumo-card verde">
+      <div class="numero" id="total-aprovados">0</div>
+      <div class="rotulo">Aprovados</div>
+    </div>
+    <div class="resumo-card vermelho">
+      <div class="numero" id="total-reprovados">0</div>
+      <div class="rotulo">Reprovados</div>
+    </div>
+  </div>
+
+  <div id="lista">
+    <div class="carregando">Carregando certificados...</div>
+  </div>
+</div>
+
+<script src="../js/coordenador.js"></script>
+</body>
+</html>
