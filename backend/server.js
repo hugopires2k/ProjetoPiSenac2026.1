@@ -9,11 +9,9 @@ require('dotenv').config();
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ── Pasta de uploads ───────────────────────────────────────────────────────
 const pastaUploads = path.join(__dirname, 'uploads');
 if (!fs.existsSync(pastaUploads)) fs.mkdirSync(pastaUploads);
 
-// ── Multer ─────────────────────────────────────────────────────────────────
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, pastaUploads),
   filename:    (req, file, cb) => {
@@ -33,7 +31,6 @@ const upload = multer({
   }
 });
 
-// ── Dados em memória ───────────────────────────────────────────────────────
 const usuarios = [
   { id: 1, nome: 'Admin',        email: 'admin@senac.br',        senha: 'admin123',  perfil: 'admin'       },
   { id: 2, nome: 'Coordenador',  email: 'coordenador@senac.br',  senha: 'coord123',  perfil: 'coordenador' },
@@ -43,12 +40,10 @@ const certificados = [];
 let proximoIdUsuario = 4;
 let proximoIdCert    = 1;
 
-// ── Middlewares ────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(pastaUploads));
 
-// ── Autenticação ───────────────────────────────────────────────────────────
 function autenticar(req, res, next) {
   const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -74,11 +69,7 @@ function exigirPerfil(...perfis) {
   };
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-// ROTAS
-// ══════════════════════════════════════════════════════════════════════════
 
-// ── Login ──────────────────────────────────────────────────────────────────
 app.post('/login', (req, res) => {
   const { email, senha } = req.body;
   if (!email || !senha) return res.status(400).json({ erro: 'E-mail e senha obrigatórios.' });
@@ -88,17 +79,12 @@ app.post('/login', (req, res) => {
   res.json({ token, perfil: usuario.perfil, nome: usuario.nome, email: usuario.email });
 });
 
-// ── Perfil do usuário logado ───────────────────────────────────────────────
 app.get('/me', autenticar, (req, res) => {
   const { senha, ...dados } = req.usuario;
   res.json(dados);
 });
 
-// ══════════════════════════════════════════════════════════════════════════
-// CERTIFICADOS
-// ══════════════════════════════════════════════════════════════════════════
 
-// Enviar certificado (aluno)
 app.post('/certificados', autenticar, exigirPerfil('aluno'), upload.single('arquivo'), (req, res) => {
   if (!req.file) return res.status(400).json({ erro: 'Arquivo obrigatório.' });
   const { nome, horas, categoria, descricao } = req.body;
@@ -123,7 +109,6 @@ app.post('/certificados', autenticar, exigirPerfil('aluno'), upload.single('arqu
   res.status(201).json({ mensagem: 'Certificado enviado com sucesso!', id: cert.id });
 });
 
-// Listar certificados
 app.get('/certificados', autenticar, (req, res) => {
   if (req.usuario.perfil === 'aluno') {
     return res.json(certificados.filter(c => c.emailAluno === req.usuario.email));
@@ -131,7 +116,6 @@ app.get('/certificados', autenticar, (req, res) => {
   res.json(certificados);
 });
 
-// Atualizar status (coordenador ou admin)
 app.patch('/certificados/:id/status', autenticar, exigirPerfil('coordenador', 'admin'), (req, res) => {
   const cert = certificados.find(c => c.id === Number(req.params.id));
   if (!cert) return res.status(404).json({ erro: 'Certificado não encontrado.' });
@@ -144,16 +128,11 @@ app.patch('/certificados/:id/status', autenticar, exigirPerfil('coordenador', 'a
   res.json({ mensagem: 'Status atualizado.', certificado: cert });
 });
 
-// ══════════════════════════════════════════════════════════════════════════
-// USUÁRIOS (admin)
-// ══════════════════════════════════════════════════════════════════════════
 
-// Listar usuários
 app.get('/usuarios', autenticar, exigirPerfil('admin'), (req, res) => {
   res.json(usuarios.map(({ senha, ...u }) => u));
 });
 
-// Cadastrar usuário
 app.post('/usuarios', autenticar, exigirPerfil('admin'), (req, res) => {
   const { nome, email, senha, perfil } = req.body;
   if (!nome || !email || !senha || !perfil) {
@@ -170,7 +149,6 @@ app.post('/usuarios', autenticar, exigirPerfil('admin'), (req, res) => {
   res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso!', id: novo.id });
 });
 
-// Excluir usuário
 app.delete('/usuarios/:id', autenticar, exigirPerfil('admin'), (req, res) => {
   const id  = Number(req.params.id);
   const idx = usuarios.findIndex(u => u.id === id);
@@ -182,7 +160,6 @@ app.delete('/usuarios/:id', autenticar, exigirPerfil('admin'), (req, res) => {
   res.json({ mensagem: 'Usuário removido.' });
 });
 
-// ── Erros do Multer ────────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   if (err) return res.status(400).json({ erro: err.message });
   next();
