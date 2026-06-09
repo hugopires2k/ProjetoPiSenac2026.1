@@ -1,6 +1,5 @@
 const API = 'http://localhost:3000';
 
-// Proteção de rota: redireciona para login se não estiver autenticado
 const token = localStorage.getItem('token');
 if (!token) window.location.href = 'login.html';
 
@@ -51,12 +50,10 @@ async function carregarCertificados() {
       const item = document.createElement('div');
       item.className = 'certificado-item';
 
-      // Exibe e-mail do aluno para coordenador/admin
       const detalheExtra = (perfil === 'coordenador' || perfil === 'admin')
         ? `<div class="cert-aluno">${cert.emailAluno}</div>`
         : '';
 
-      // Botões de ação para coordenador/admin
       const acoes = (perfil === 'coordenador' || perfil === 'admin')
         ? `<div class="cert-acoes">
              <button class="btn-status aprovar"   onclick="atualizarStatus(${cert.id}, 'aprovado')">Aprovar</button>
