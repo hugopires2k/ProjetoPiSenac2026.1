@@ -9,7 +9,6 @@ function sair() {
   window.location.href = 'login.html';
 }
 
-// ── Carregar usuários ──────────────────────────────────────────────────────
 async function carregarUsuarios() {
   const tbody = document.getElementById('tabela-usuarios');
   try {
@@ -39,7 +38,6 @@ async function carregarUsuarios() {
   }
 }
 
-// ── Cadastrar usuário ──────────────────────────────────────────────────────
 async function cadastrarUsuario() {
   const nome   = document.getElementById('c-nome').value.trim();
   const email  = document.getElementById('c-email').value.trim();
@@ -85,7 +83,6 @@ async function cadastrarUsuario() {
   }
 }
 
-// ── Excluir usuário ────────────────────────────────────────────────────────
 async function excluirUsuario(id, nome) {
   if (!confirm(`Excluir o usuário "${nome}"?`)) return;
   try {
