@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0f1117"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Login · SENAC PI 2026</title>
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body>
+
+<div class="split">
+  <div class="brand-panel">
+    <div class="brand-inner">
+      <div class="brand-logo">SENAC</div>
+      <div class="brand-year">PI 2026</div>
+      <p class="brand-desc">Sistema de Horas<br>Complementares</p>
+      <div class="brand-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-inner">
+
+      <div class="step" id="step-perfil">
+        <p class="form-eyebrow">Bem-vindo</p>
+        <h1>Como você vai entrar?</h1>
+        <p class="form-sub">Selecione seu perfil de acesso para continuar</p>
+
+        <div class="perfil-grid">
+          <button class="perfil-card" onclick="selecionarPerfil('aluno')">
+            <div class="perfil-icon">🎓</div>
+            <div class="perfil-nome">Aluno</div>
+            <div class="perfil-desc">Envie e acompanhe seus certificados</div>
+          </button>
+          <button class="perfil-card" onclick="selecionarPerfil('coordenador')">
+            <div class="perfil-icon">📋</div>
+            <div class="perfil-nome">Coordenador</div>
+            <div class="perfil-desc">Valide certificados dos alunos</div>
+          </button>
+          <button class="perfil-card" onclick="selecionarPerfil('admin')">
+            <div class="perfil-icon">⚙️</div>
+            <div class="perfil-nome">Administrador</div>
+            <div class="perfil-desc">Gerencie usuários do sistema</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="step hidden" id="step-login">
+        <button class="btn-voltar" onclick="voltarPerfil()">← Voltar</button>
+
+        <div class="perfil-ativo" id="perfil-ativo-label"></div>
+
+        <h1>Acessar sistema</h1>
+        <p class="form-sub">Digite suas credenciais para entrar</p>
+
+        <div class="field-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com" autocomplete="email" />
+        </div>
+
+        <div class="field-group">
+          <label for="senha">Senha</label>
+          <div class="input-wrap">
+            <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="toggle-senha" onclick="toggleSenha()" tabindex="-1">👁</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btn-login" onclick="fazerLogin()">Entrar</button>
+        <p class="msg" id="msg"></p>
+
+        <p class="hint">Não tem acesso? Fale com o administrador.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/login.js"></script>
+</body>
+</html>

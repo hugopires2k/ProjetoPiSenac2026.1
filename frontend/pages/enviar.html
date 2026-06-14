@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enviar Certificado</title>
+  <link rel="stylesheet" href="../css/enviar.css" />
+</head>
+<body>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-links">
+    <a href="certificados.html">Meus Certificados</a>
+    <a href="enviar.html" class="ativo">Enviar</a>
+    <a href="login.html">Sair</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Enviar Certificado</h1>
+  <p class="subtitle">Preencha os dados e anexe o arquivo do certificado</p>
+
+  <div class="card">
+    <label>Nome da Atividade</label>
+    <input type="text" id="nome" placeholder="Ex: Workshop de Inteligência Artificial" />
+
+    <label>Categoria</label>
+    <select id="categoria">
+      <option value="">Selecione uma categoria</option>
+      <option value="palestra">Palestra</option>
+      <option value="curso">Curso</option>
+      <option value="workshop">Workshop</option>
+      <option value="evento">Evento</option>
+      <option value="voluntariado">Voluntariado</option>
+    </select>
+
+    <label>Carga Horária (horas)</label>
+    <input type="number" id="horas" placeholder="Ex: 8" min="1" />
+
+    <label>Descrição (opcional)</label>
+    <textarea id="descricao" placeholder="Descreva brevemente a atividade..."></textarea>
+
+    <label>Arquivo do Certificado (PDF ou imagem)</label>
+    <div class="upload-area" onclick="document.getElementById('arquivo-input').click()">
+      <p>Clique para selecionar ou arraste o arquivo aqui</p>
+      <p><span>PDF, JPG ou PNG</span></p>
+    </div>
+    <input type="file" id="arquivo-input" accept=".pdf,.jpg,.jpeg,.png" onchange="mostrarArquivo()" />
+    <div id="arquivo-nome"></div>
+
+    <button onclick="enviarCertificado()">Enviar Certificado</button>
+    <p class="msg" id="msg"></p>
+  </div>
+</div>
+
+<script src="../js/enviar.js"></script>
+
+</body>
+</html>

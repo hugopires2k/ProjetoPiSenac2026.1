@@ -1,0 +1,330 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:       #0f1117;
+  --surface:  #1a1d27;
+  --border:   #2e3245;
+  --accent:   #6c8aff;
+  --accent-h: #8aa0ff;
+  --text:     #e8e8e8;
+  --muted:    #7a7f99;
+  --green:    #4caf7d;
+  --green-bg: #1a3a2a;
+  --red:      #e05c5c;
+  --red-bg:   #3a1a1a;
+  --yellow:   #f0b429;
+  --yellow-bg:#2e2a1a;
+}
+
+body {
+  font-family: Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-links a, .nav-usuario {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.ativo {
+  color: var(--text);
+}
+
+.nav-links a.ativo {
+  background: rgba(108,138,255,0.1);
+  color: var(--accent);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-usuario {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+}
+
+.nav-btn-sair {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: Arial, sans-serif;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.nav-btn-sair:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.page-eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: Arial, sans-serif;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: normal;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 6px;
+  font-family: Arial, sans-serif;
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 36px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 22px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  transition: background 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.btn-primary:hover { background: var(--accent-h); }
+
+.resumo {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.resumo-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+}
+
+.resumo-card .numero {
+  font-size: 30px;
+  color: var(--accent);
+}
+
+.resumo-card.verde   .numero { color: var(--green); }
+.resumo-card.amarelo .numero { color: var(--yellow); }
+.resumo-card.vermelho .numero { color: var(--red); }
+.resumo-card.azul    .numero { color: #4ca9f0; }
+.resumo-card.roxo    .numero { color: #a96cff; }
+
+.resumo-card .rotulo {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: Arial, sans-serif;
+  margin-top: 4px;
+}
+
+.status {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: Arial, sans-serif;
+  margin-top: 6px;
+}
+
+.status.aprovado  { background: var(--green-bg);  color: var(--green); }
+.status.pendente  { background: var(--yellow-bg); color: var(--yellow); }
+.status.reprovado { background: var(--red-bg);    color: var(--red); }
+
+.vazio {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+}
+
+.carregando {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.badge.aluno       { background: #1a2a3a; color: #4ca9f0; }
+.badge.coordenador { background: #1a1d2e; color: var(--accent); }
+.badge.admin       { background: #2a1a3a; color: #a96cff; }
+
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.verde  { border-color: var(--green);  color: var(--green); }
+.toast.vermelho { border-color: var(--red);  color: var(--red); }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden { display: none; }
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+}
+
+.modal-box {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 90vw;
+  max-width: 860px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.modal-header button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  width: auto;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.modal-header button:hover { color: var(--text); }
+
+.modal-body {
+  flex: 1;
+  overflow: hidden;
+}
+
+.modal-body iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+h2 {
+  font-size: 17px;
+  font-weight: normal;
+  margin-bottom: 20px;
+  color: #c8c8d8;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .container { padding: 28px 16px; }
+  .topo { flex-direction: column; gap: 16px; }
+  .resumo { flex-wrap: wrap; }
+  .resumo-card { min-width: calc(50% - 6px); }
+}

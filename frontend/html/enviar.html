@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0f1117"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Enviar Certificado · SENAC PI 2026</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/enviar.css" />
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-links">
+    <a href="certificados.html">Certificados</a>
+    <a href="enviar.html" class="ativo">Enviar</a>
+    <button class="nav-btn-sair" onclick="sair()">Sair</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="topo">
+    <div>
+      <h1>Enviar Certificado</h1>
+      <p class="subtitle">Preencha os dados e anexe o arquivo do certificado</p>
+    </div>
+  </div>
+
+  <div class="card-form">
+    <div class="form-cols">
+      <div class="field-group">
+        <label for="nome">Nome da Atividade</label>
+        <input type="text" id="nome" placeholder="Ex: Workshop de Inteligência Artificial" />
+      </div>
+
+      <div class="field-group">
+        <label for="categoria">Categoria</label>
+        <select id="categoria">
+          <option value="">Selecione uma categoria</option>
+          <option value="palestra">Palestra</option>
+          <option value="curso">Curso</option>
+          <option value="workshop">Workshop</option>
+          <option value="evento">Evento</option>
+          <option value="voluntariado">Voluntariado</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="horas">Carga Horária (horas)</label>
+        <input type="number" id="horas" placeholder="Ex: 8" min="1" max="999" />
+      </div>
+
+      <div class="field-group">
+        <label for="descricao">Descrição (opcional)</label>
+        <textarea id="descricao" placeholder="Descreva brevemente a atividade..."></textarea>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Arquivo do Certificado</label>
+      <div class="upload-area" id="upload-area"
+           onclick="document.getElementById('arquivo-input').click()"
+           ondragover="dragOver(event)"
+           ondragleave="dragLeave(event)"
+           ondrop="drop(event)">
+        <div class="upload-icon">📄</div>
+        <p>Clique para selecionar ou arraste o arquivo aqui</p>
+        <p class="upload-hint">PDF, JPG ou PNG · máx. 10 MB</p>
+        <div id="arquivo-nome"></div>
+      </div>
+      <input type="file" id="arquivo-input" accept=".pdf,.jpg,.jpeg,.png" onchange="mostrarArquivo()" />
+    </div>
+
+    <button class="btn-enviar-form" id="btn-enviar" onclick="enviarCertificado()">Enviar Certificado</button>
+    <p class="msg" id="msg"></p>
+  </div>
+</div>
+
+<script src="../js/enviar.js"></script>
+</body>
+</html>

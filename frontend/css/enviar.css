@@ -1,0 +1,120 @@
+.container { max-width: 640px; }
+
+.card-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px;
+}
+
+.form-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
+.form-cols .field-group:nth-child(1),
+.form-cols .field-group:nth-child(4) {
+  grid-column: 1 / -1;
+}
+
+.field-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+}
+
+input, select, textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: Arial, sans-serif;
+}
+
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+select option { background: var(--surface); }
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-area:hover, .upload-area.drag {
+  border-color: var(--accent);
+  background: rgba(108,138,255,0.04);
+}
+
+.upload-icon { font-size: 28px; margin-bottom: 8px; }
+
+.upload-area p {
+  color: var(--muted);
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.upload-hint { font-size: 12px !important; margin-top: 4px; }
+
+#arquivo-input { display: none; }
+
+#arquivo-nome {
+  font-size: 13px;
+  color: var(--green);
+  margin-top: 8px;
+  font-family: Arial, sans-serif;
+  min-height: 18px;
+}
+
+.btn-enviar-form {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: Arial, sans-serif;
+  margin-top: 4px;
+}
+
+.btn-enviar-form:hover { background: var(--accent-h); }
+.btn-enviar-form:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.msg {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 14px;
+  min-height: 20px;
+  font-family: Arial, sans-serif;
+}
+
+@media (max-width: 560px) {
+  .form-cols { grid-template-columns: 1fr; }
+  .form-cols .field-group:nth-child(1),
+  .form-cols .field-group:nth-child(4) { grid-column: auto; }
+  .card-form { padding: 24px; }
+}

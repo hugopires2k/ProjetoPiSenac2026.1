@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0f1117"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Painel Admin · SENAC PI 2026</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-right">
+    <span class="nav-usuario">👤 <span id="nome-usuario"></span></span>
+    <button class="nav-btn-sair" onclick="sair()">Sair</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="topo">
+    <div>
+      <p class="page-eyebrow">Administrador</p>
+      <h1>Painel Administrativo</h1>
+      <p class="subtitle">Gerencie os usuários e acompanhe o sistema</p>
+    </div>
+  </div>
+
+  <div class="resumo">
+    <div class="resumo-card">
+      <div class="numero" id="total-alunos">—</div>
+      <div class="rotulo">Alunos</div>
+    </div>
+    <div class="resumo-card azul">
+      <div class="numero" id="total-coordenadores">—</div>
+      <div class="rotulo">Coordenadores</div>
+    </div>
+    <div class="resumo-card roxo">
+      <div class="numero" id="total-admins">—</div>
+      <div class="rotulo">Admins</div>
+    </div>
+    <div class="resumo-card verde">
+      <div class="numero" id="total-certs">—</div>
+      <div class="rotulo">Certificados</div>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+    <div class="card-form">
+      <h2>Cadastrar Usuário</h2>
+
+      <div class="field-group">
+        <label for="c-nome">Nome completo</label>
+        <input type="text" id="c-nome" placeholder="Ex: João Silva"/>
+      </div>
+      <div class="field-group">
+        <label for="c-email">E-mail</label>
+        <input type="email" id="c-email" placeholder="joao@senac.br"/>
+      </div>
+      <div class="field-group">
+        <label for="c-senha">Senha</label>
+        <input type="password" id="c-senha" placeholder="Senha de acesso"/>
+      </div>
+      <div class="field-group">
+        <label for="c-perfil">Perfil</label>
+        <select id="c-perfil">
+          <option value="">Selecione o perfil</option>
+          <option value="aluno">Aluno</option>
+          <option value="coordenador">Coordenador</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <button class="btn-cadastrar" id="btn-cadastrar" onclick="cadastrarUsuario()">Cadastrar Usuário</button>
+      <p class="msg" id="msg-cadastro"></p>
+    </div>
+
+    <div class="card-tabela">
+      <div class="tabela-header">
+        <h2>Usuários Cadastrados</h2>
+        <input type="text" class="busca" id="busca-usuario" placeholder="Buscar usuário..." oninput="buscarUsuario()" />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Perfil</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tabela-usuarios">
+          <tr><td colspan="4" class="carregando">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

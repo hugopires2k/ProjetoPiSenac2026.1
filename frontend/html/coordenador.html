@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0f1117"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Painel do Coordenador · SENAC PI 2026</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/coordenador.css" />
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<nav>
+  <div class="logo">SENAC · PI 2026</div>
+  <div class="nav-right">
+    <span class="nav-usuario">👤 <span id="nome-usuario"></span></span>
+    <button class="nav-btn-sair" onclick="sair()">Sair</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="topo">
+    <div>
+      <p class="page-eyebrow">Coordenador</p>
+      <h1>Painel de Validação</h1>
+      <p class="subtitle">Analise e valide os certificados enviados pelos alunos</p>
+    </div>
+  </div>
+
+  <div class="resumo">
+    <div class="resumo-card">
+      <div class="numero" id="total-enviados">—</div>
+      <div class="rotulo">Total</div>
+    </div>
+    <div class="resumo-card amarelo">
+      <div class="numero" id="total-pendentes">—</div>
+      <div class="rotulo">Pendentes</div>
+    </div>
+    <div class="resumo-card verde">
+      <div class="numero" id="total-aprovados">—</div>
+      <div class="rotulo">Aprovados</div>
+    </div>
+    <div class="resumo-card vermelho">
+      <div class="numero" id="total-reprovados">—</div>
+      <div class="rotulo">Reprovados</div>
+    </div>
+  </div>
+
+  <div class="filtros">
+    <button class="filtro ativo" onclick="filtrar('todos', this)">Todos</button>
+    <button class="filtro" onclick="filtrar('pendente', this)">Pendentes</button>
+    <button class="filtro" onclick="filtrar('aprovado', this)">Aprovados</button>
+    <button class="filtro" onclick="filtrar('reprovado', this)">Reprovados</button>
+  </div>
+
+  <div id="lista">
+    <div class="carregando">Carregando certificados...</div>
+  </div>
+</div>
+
+<div id="modal-arquivo" class="modal hidden">
+  <div class="modal-overlay" onclick="fecharModal()"></div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <span id="modal-titulo">Visualizar Arquivo</span>
+      <button onclick="fecharModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <iframe id="modal-iframe" src=""></iframe>
+    </div>
+  </div>
+</div>
+
+<script src="../js/coordenador.js"></script>
+</body>
+</html>
