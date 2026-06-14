@@ -3,7 +3,7 @@ const multer  = require('multer');
 const cors    = require('cors');
 const path    = require('path');
 const fs      = require('fs');
-const mysql   = require('mysql2/promise');
+const { Pool } = require('pg');
 
 require('dotenv').config();
 
@@ -33,18 +33,13 @@ const upload = multer({
   }
 });
 
-let db;
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
 
 async function conectarBanco() {
-  db = await mysql.createPool({
-    host:     process.env.DB_HOST     || 'localhost',
-    port:     process.env.DB_PORT     || 3306,
-    user:     process.env.DB_USER     || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME     || 'senac_pi',
-    waitForConnections: true,
-    connectionLimit:    10
-  });
+  await db.query('SELECT 1');
   console.log('Banco de dados conectado.');
 }
 
@@ -59,7 +54,7 @@ async function autenticar(req, res, next) {
   }
   try {
     const email = Buffer.from(authHeader.split(' ')[1], 'base64').toString('utf8');
-    const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+    const { rows } = await db.query('SELECT * FROM usuarios WHERE email = $1', [email]);
     if (rows.length === 0) return res.status(401).json({ erro: 'Token inválido.' });
     req.usuario = rows[0];
     next();
@@ -80,7 +75,7 @@ function exigirPerfil(...perfis) {
 app.post('/login', async (req, res) => {
   const { email, senha } = req.body;
   if (!email || !senha) return res.status(400).json({ erro: 'E-mail e senha obrigatórios.' });
-  const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ? AND senha = ?', [email, senha]);
+  const { rows } = await db.query('SELECT * FROM usuarios WHERE email = $1 AND senha = $2', [email, senha]);
   if (rows.length === 0) return res.status(401).json({ erro: 'E-mail ou senha inválidos.' });
   const usuario = rows[0];
   const token = Buffer.from(usuario.email).toString('base64');
@@ -99,39 +94,39 @@ app.post('/certificados', autenticar, exigirPerfil('aluno'), upload.single('arqu
   const horasNum = Number(horas);
   if (isNaN(horasNum) || horasNum <= 0) return res.status(400).json({ erro: 'Carga horária inválida.' });
 
-  const [result] = await db.query(
-    'INSERT INTO certificados (usuario_id, nome, categoria, horas, descricao, arquivo) VALUES (?, ?, ?, ?, ?, ?)',
+  const { rows } = await db.query(
+    'INSERT INTO certificados (usuario_id, nome, categoria, horas, descricao, arquivo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
     [req.usuario.id, nome, categoria, horasNum, descricao || '', req.file.filename]
   );
-  res.status(201).json({ mensagem: 'Certificado enviado com sucesso!', id: result.insertId });
+  res.status(201).json({ mensagem: 'Certificado enviado com sucesso!', id: rows[0].id });
 });
 
 app.get('/certificados', autenticar, async (req, res) => {
-  let rows;
+  let result;
   if (req.usuario.perfil === 'aluno') {
-    [rows] = await db.query(`
-      SELECT c.*, u.nome AS nomeAluno, u.email AS emailAluno,
-             DATE_FORMAT(c.criado_em, '%d/%m/%Y') AS data
+    result = await db.query(`
+      SELECT c.*, u.nome AS "nomeAluno", u.email AS "emailAluno",
+             TO_CHAR(c.criado_em, 'DD/MM/YYYY') AS data
       FROM certificados c
       JOIN usuarios u ON c.usuario_id = u.id
-      WHERE c.usuario_id = ?
+      WHERE c.usuario_id = $1
       ORDER BY c.criado_em DESC
     `, [req.usuario.id]);
   } else {
-    [rows] = await db.query(`
-      SELECT c.*, u.nome AS nomeAluno, u.email AS emailAluno,
-             DATE_FORMAT(c.criado_em, '%d/%m/%Y') AS data
+    result = await db.query(`
+      SELECT c.*, u.nome AS "nomeAluno", u.email AS "emailAluno",
+             TO_CHAR(c.criado_em, 'DD/MM/YYYY') AS data
       FROM certificados c
       JOIN usuarios u ON c.usuario_id = u.id
       ORDER BY c.criado_em DESC
     `);
   }
-  res.json(rows);
+  res.json(result.rows);
 });
 
 app.get('/certificados/:id/arquivo', autenticar, async (req, res) => {
-  const [rows] = await db.query(
-    'SELECT c.*, u.email AS emailAluno FROM certificados c JOIN usuarios u ON c.usuario_id = u.id WHERE c.id = ?',
+  const { rows } = await db.query(
+    'SELECT c.*, u.email AS "emailAluno" FROM certificados c JOIN usuarios u ON c.usuario_id = u.id WHERE c.id = $1',
     [Number(req.params.id)]
   );
   if (rows.length === 0) return res.status(404).json({ erro: 'Certificado não encontrado.' });
@@ -149,29 +144,29 @@ app.patch('/certificados/:id/status', autenticar, exigirPerfil('coordenador', 'a
   if (!['aprovado', 'pendente', 'reprovado'].includes(status)) {
     return res.status(400).json({ erro: 'Status inválido.' });
   }
-  const [result] = await db.query(
-    'UPDATE certificados SET status = ?, observacao = ? WHERE id = ?',
+  const { rowCount } = await db.query(
+    'UPDATE certificados SET status = $1, observacao = $2 WHERE id = $3',
     [status, observacao || '', Number(req.params.id)]
   );
-  if (result.affectedRows === 0) return res.status(404).json({ erro: 'Certificado não encontrado.' });
+  if (rowCount === 0) return res.status(404).json({ erro: 'Certificado não encontrado.' });
   res.json({ mensagem: 'Status atualizado.' });
 });
 
 app.get('/stats', autenticar, exigirPerfil('admin', 'coordenador'), async (req, res) => {
-  const [[stats]] = await db.query(`
+  const { rows } = await db.query(`
     SELECT
       COUNT(*) AS total,
-      SUM(status = 'aprovado')  AS aprovados,
-      SUM(status = 'pendente')  AS pendentes,
-      SUM(status = 'reprovado') AS reprovados,
-      COALESCE(SUM(CASE WHEN status = 'aprovado' THEN horas ELSE 0 END), 0) AS totalHoras
+      SUM(CASE WHEN status = 'aprovado'  THEN 1 ELSE 0 END) AS aprovados,
+      SUM(CASE WHEN status = 'pendente'  THEN 1 ELSE 0 END) AS pendentes,
+      SUM(CASE WHEN status = 'reprovado' THEN 1 ELSE 0 END) AS reprovados,
+      COALESCE(SUM(CASE WHEN status = 'aprovado' THEN horas ELSE 0 END), 0) AS "totalHoras"
     FROM certificados
   `);
-  res.json(stats);
+  res.json(rows[0]);
 });
 
 app.get('/usuarios', autenticar, exigirPerfil('admin'), async (req, res) => {
-  const [rows] = await db.query('SELECT id, nome, email, perfil, criado_em FROM usuarios ORDER BY criado_em DESC');
+  const { rows } = await db.query('SELECT id, nome, email, perfil, criado_em FROM usuarios ORDER BY criado_em DESC');
   res.json(rows);
 });
 
@@ -184,26 +179,26 @@ app.post('/usuarios', autenticar, exigirPerfil('admin'), async (req, res) => {
     return res.status(400).json({ erro: 'Perfil inválido.' });
   }
   try {
-    const [result] = await db.query(
-      'INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
+    const { rows } = await db.query(
+      'INSERT INTO usuarios (nome, email, senha, perfil) VALUES ($1, $2, $3, $4) RETURNING id',
       [nome, email, senha, perfil]
     );
-    res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso!', id: result.insertId });
+    res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso!', id: rows[0].id });
   } catch (err) {
-    if (err.code === 'ER_DUP_ENTRY') return res.status(409).json({ erro: 'E-mail já cadastrado.' });
+    if (err.code === '23505') return res.status(409).json({ erro: 'E-mail já cadastrado.' });
     throw err;
   }
 });
 
 app.delete('/usuarios/:id', autenticar, exigirPerfil('admin'), async (req, res) => {
   const id = Number(req.params.id);
-  const [[admin]] = await db.query("SELECT COUNT(*) AS total FROM usuarios WHERE perfil = 'admin'");
-  const [[alvo]]  = await db.query('SELECT perfil FROM usuarios WHERE id = ?', [id]);
-  if (!alvo) return res.status(404).json({ erro: 'Usuário não encontrado.' });
-  if (alvo.perfil === 'admin' && admin.total <= 1) {
+  const { rows: adminRows } = await db.query("SELECT COUNT(*) AS total FROM usuarios WHERE perfil = 'admin'");
+  const { rows: alvoRows }  = await db.query('SELECT perfil FROM usuarios WHERE id = $1', [id]);
+  if (alvoRows.length === 0) return res.status(404).json({ erro: 'Usuário não encontrado.' });
+  if (alvoRows[0].perfil === 'admin' && Number(adminRows[0].total) <= 1) {
     return res.status(400).json({ erro: 'Não é possível excluir o único administrador.' });
   }
-  await db.query('DELETE FROM usuarios WHERE id = ?', [id]);
+  await db.query('DELETE FROM usuarios WHERE id = $1', [id]);
   res.json({ mensagem: 'Usuário removido.' });
 });
 
