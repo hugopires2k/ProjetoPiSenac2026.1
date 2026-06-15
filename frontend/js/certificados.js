@@ -25,8 +25,12 @@ function fecharModal() {
 
 function verArquivo(id, nome) {
   document.getElementById('modal-titulo').textContent = nome;
-  document.getElementById('modal-iframe').src = `${API}/certificados/${id}/arquivo?token=${token}`;
-  document.getElementById('modal-arquivo').classList.remove('hidden');
+  fetch(`${API}/certificados/${id}/arquivo`, {
+    headers: { 'Authorization': 'Bearer ' + token }
+  }).then(res => {
+    document.getElementById('modal-iframe').src = res.url;
+    document.getElementById('modal-arquivo').classList.remove('hidden');
+  });
 }
 
 function filtrar(status, btn) {
