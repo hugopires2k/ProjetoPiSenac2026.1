@@ -26,11 +26,14 @@ function fecharModal() {
 function verArquivo(id, nome) {
   document.getElementById('modal-titulo').textContent = nome;
   fetch(`${API}/certificados/${id}/arquivo`, {
-    headers: { 'Authorization': 'Bearer ' + token }
-  }).then(res => {
-    document.getElementById('modal-iframe').src = res.url;
+    headers: { 'Authorization': 'Bearer ' + token },
+    redirect: 'follow'
+  }).then(async res => {
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    document.getElementById('modal-iframe').src = url;
     document.getElementById('modal-arquivo').classList.remove('hidden');
-  });
+  }).catch(() => alert('Erro ao carregar arquivo.'));
 }
 
 function filtrar(status, btn) {
