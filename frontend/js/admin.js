@@ -1,4 +1,4 @@
-const API = 'https://senac-pi-backend.onrender.com';
+const API = 'http://localhost:3000';
 const token = localStorage.getItem('token');
 const perfil = localStorage.getItem('perfil');
 

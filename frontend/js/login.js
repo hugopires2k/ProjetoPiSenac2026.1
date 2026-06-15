@@ -1,4 +1,4 @@
-const API = 'https://senac-pi-backend.onrender.com';
+const API = 'http://localhost:3000';
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js').catch(() => {});

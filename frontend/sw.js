@@ -34,7 +34,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.url.includes('/api/') || e.request.url.includes('senac-pi-backend.onrender.com')) {
+  if (e.request.url.includes('/api/') || e.request.url.includes('localhost:3000')) {
     return;
   }
   e.respondWith(

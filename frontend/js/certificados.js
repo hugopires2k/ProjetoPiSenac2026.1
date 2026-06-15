@@ -1,4 +1,4 @@
-const API = 'https://senac-pi-backend.onrender.com';
+const API = 'http://localhost:3000';
 const token = localStorage.getItem('token');
 if (!token) window.location.href = 'login.html';
 
@@ -25,15 +25,8 @@ function fecharModal() {
 
 function verArquivo(id, nome) {
   document.getElementById('modal-titulo').textContent = nome;
-  fetch(`${API}/certificados/${id}/arquivo`, {
-    headers: { 'Authorization': 'Bearer ' + token },
-    redirect: 'follow'
-  }).then(async res => {
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    document.getElementById('modal-iframe').src = url;
-    document.getElementById('modal-arquivo').classList.remove('hidden');
-  }).catch(() => alert('Erro ao carregar arquivo.'));
+  document.getElementById('modal-iframe').src = `${API}/certificados/${id}/arquivo?token=${token}`;
+  document.getElementById('modal-arquivo').classList.remove('hidden');
 }
 
 function filtrar(status, btn) {
