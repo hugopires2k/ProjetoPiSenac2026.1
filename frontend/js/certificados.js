@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000';
+const API = 'https://senac-pi-backend.onrender.com';
 const token = localStorage.getItem('token');
 if (!token) window.location.href = 'login.html';
 
